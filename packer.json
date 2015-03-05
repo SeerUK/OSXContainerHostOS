@@ -1,0 +1,75 @@
+{
+    "variables": {
+        "ssh_user": "vagrant",
+        "ssh_pass": "vagrant",
+        "hostname": "vagrant"
+    },
+
+    "builders": [
+        {
+            "type": "virtualbox-iso",
+            "guest_os_type": "Ubuntu_64",
+
+            "vboxmanage": [
+                [ "modifyvm", "{{.Name}}", "--cpus", "8" ],
+                [ "modifyvm", "{{.Name}}", "--memory", "4096" ],
+                [ "modifyvm", "{{.Name}}", "--vram", "32" ]
+            ],
+
+            "disk_size": "102400",
+
+            "iso_url": "http://releases.ubuntu.com/14.04/ubuntu-14.04.2-server-amd64.iso",
+            "iso_checksum": "83aabd8dcf1e8f469f3c72fff2375195",
+            "iso_checksum_type": "md5",
+
+            "http_directory" : "./",
+            "http_port_min" : 9001,
+            "http_port_max" : 9001,
+
+            "ssh_username": "{{user `ssh_user`}}",
+            "ssh_password": "{{user `ssh_pass`}}",
+            "ssh_port": 22,
+            "ssh_wait_timeout": "10000s",
+
+            "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
+
+            "boot_wait": "10s",
+            "boot_command": [
+                "<esc><wait>",
+                "<esc><wait>",
+                "<enter><wait>",
+                "/install/vmlinuz<wait>",
+                " auto<wait>",
+                " console-setup/ask_detect=false<wait>",
+                " console-setup/layoutcode=GB<wait>",
+                " console-setup/modelcode=SKIP<wait>",
+                " debconf/frontend=noninteractive<wait>",
+                " debian-installer=en_GB<wait>",
+                " fb=false<wait>",
+                " initrd=/install/initrd.gz<wait>",
+                " kbd-chooser/method=us<wait>",
+                " keyboard-configuration/layout=GB<wait>",
+                " keyboard-configuration/variant=GB<wait>",
+                " locale=en_GB<wait>",
+                " netcfg/get_domain=vm<wait>",
+                " netcfg/get_hostname=vagrant<wait>",
+                " noapic<wait>",
+                " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
+                " -- <wait>",
+                "<enter><wait>"
+            ]
+        }
+    ],
+
+    "post-processors": [
+        {
+            "type": "vagrant",
+            "compression_level": 9,
+            "override": {
+                "vmware": {
+                    "compression_level": 0
+                }
+            }
+        }
+    ]
+}

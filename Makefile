@@ -1,6 +1,11 @@
-default: baseimage-download
+default: build-box
 
-baseimage-download:
-	curl -LO https://github.com/rancherio/os/releases/download/v0.1.1/rancheros.iso
+build-box: packer-validate packer-build
 
-.PHONY: baseimage-download
+packer-validate:
+	packer validate packer.json
+
+packer-build:
+	packer build packer.json
+
+.PHONY: build-box
