@@ -8,6 +8,8 @@
     "builders": [
         {
             "type": "virtualbox-iso",
+
+            "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
             "guest_os_type": "Ubuntu_64",
 
             "vboxmanage": [
@@ -61,15 +63,24 @@
         }
     ],
 
+    "provisioners": [
+        {
+            "type": "shell",
+            "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+            "scripts": [
+                "provisioning/shell/scripts/sudoers.sh",
+                "provisioning/shell/scripts/update.sh",
+                "provisioning/shell/scripts/vagrant.sh",
+                "provisioning/shell/scripts/vbox.sh"
+            ]
+        }
+    ],
+
     "post-processors": [
         {
             "type": "vagrant",
             "compression_level": 9,
-            "override": {
-                "vmware": {
-                    "compression_level": 0
-                }
-            }
+            "output": "build/OSXContainerHost.box"
         }
     ]
 }
