@@ -1,0 +1,13 @@
+{
+    "name": "seeruk/osxcontainerhost64",
+    "description": "Lightweight Docker container host built on Ubuntu 14.04 LTS 64-bit.",
+    "versions": [{
+        "version": "0.1.0",
+        "providers": [{
+            "name": "virtualbox",
+            "url": "./OSXContainerHost.box",
+            "checksum_type": "md5",
+            "checksum": "3abf6ccb499367ab0dad6b5335ad5cab"
+        }]
+    }]
+}

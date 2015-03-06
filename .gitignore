@@ -1,4 +1,6 @@
 output-virtualbox-iso/
+output-virtualbox-ovf/
 packer_cache/
+tmp/
 **/*.box
 **/*.iso
